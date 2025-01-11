@@ -8,11 +8,11 @@ package:
 
 source:
   fn: {{ name }}-{{ version }}.tar.gz
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   noarch: python
   script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv"
   entry_points:
@@ -23,21 +23,23 @@ build:
     - rdfgraphisomorphism = rdflib.tools.graphisomorphism:main
 
 requirements:
-  build:
-    - python
+  host:
+    - python {{ python_min }}
     - pip
     - setuptools
     - isodate
     - pyparsing
 
   run:
-    - python
+    - python >={{ python_min }}
     - isodate
     - pyparsing
     - html5lib
     - sparqlwrapper
 
 test:
+  requires:
+    - python {{ python_min }}
   imports:
     - rdflib
     - rdflib.extras
